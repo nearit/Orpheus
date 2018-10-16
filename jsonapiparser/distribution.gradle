@@ -1,0 +1,59 @@
+buildProperties {
+    localProperties {
+        file project.file("local.properties")
+    }
+}
+
+
+/*
+ *  Gets the version name from the latest Git tag
+ */
+def getVersionName = {
+    def stdout = new ByteArrayOutputStream()
+    try {
+        exec {
+            commandLine 'git', 'describe', '--tags', '--abbrev=0'
+            standardOutput = stdout
+        }
+        return stdout.toString().trim()
+    }
+    catch (e) {
+        println("Can't get version from git: " + e)
+        return "adhoc"
+    }
+}
+
+
+allprojects {
+    version = "${getVersionName()}"
+}
+
+/*
+ *  Upload to Bintray
+ */
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+artifacts {
+    archives sourcesJar
+}
+
+group = 'it.near.sdk'
+
+bintray {
+    user = (buildProperties.localProperties['bintray.user'] | buildProperties.env['BINTRAY_USER']).string
+    key = (buildProperties.localProperties['bintray.apikey'] | buildProperties.env['BINTRAY_APIKEY']).string
+    configurations = ['archives']
+
+    pkg {
+        repo = 'NearIT-Android-SDK'
+        name = 'it.near.sdk:jsonapiparser'
+        userOrg = 'nearit'
+        vcsUrl = 'https://bitbucket.org/Synapsev2/json-api-parser.git'
+        websiteUrl = 'https://nearit.com'
+
+        licenses = ['MIT']
+        publish = true
+    }
+}

@@ -3,12 +3,22 @@ buildscript {
         jcenter()
     }
     dependencies {
+        classpath 'com.novoda:gradle-build-properties-plugin:0.3'
         classpath 'de.mobilej.unmock:UnMockPlugin:0.6.5'
     }
 }
 
+plugins {
+    id "com.jfrog.bintray" version "1.4"
+}
+
 apply plugin: 'com.android.library'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.novoda.build-properties'
 apply plugin: 'de.mobilej.unmock'
+
+apply from: 'distribution.gradle'
 
 android {
     compileSdkVersion 27
@@ -16,8 +26,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        versionCode 0
+        versionName version
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
