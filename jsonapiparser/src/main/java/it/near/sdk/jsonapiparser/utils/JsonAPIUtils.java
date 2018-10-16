@@ -23,6 +23,7 @@ import static it.near.sdk.jsonapiparser.utils.lang.Lang.safe;
  */
 
 public class JsonAPIUtils {
+
     private static final String TAG = "NearJsonAPIUtils";
     private static final String KEY_DATA_ELEMENT = "data";
     private static final String KEY_ID = "id";
@@ -37,6 +38,7 @@ public class JsonAPIUtils {
      * @return codified string.
      * @throws JSONException if map can be transformed into JSONObject
      */
+    @SuppressWarnings("WeakerAccess")
     public static String toJsonAPI(String type, HashMap<String, Object> map) throws JSONException {
         return toJsonAPI(type, null, map);
     }
@@ -49,6 +51,7 @@ public class JsonAPIUtils {
      * @return codified string.
      * @throws JSONException if map can be transformed into JSONObject
      */
+    @SuppressWarnings("WeakerAccess")
     public static String toJsonAPI(String type, List<HashMap<String, Object>> maps) throws JSONException {
         JSONArray resources = new JSONArray();
         for (HashMap<String, Object> map : safe(maps)) {
@@ -66,7 +69,9 @@ public class JsonAPIUtils {
      * @param pairs the pairs of id and type.
      * @return codified string
      * @throws JSONException if object can't be constructed
+     * @throws IllegalArgumentException if pairs is null
      */
+    @SuppressWarnings("WeakerAccess")
     public static String toJsonAPIWithIds(String type,
                                           List<Pair<String, HashMap<String, Object>>> pairs) throws JSONException, IllegalArgumentException {
         if (pairs == null) {
@@ -90,12 +95,14 @@ public class JsonAPIUtils {
      * @return codified string.
      * @throws JSONException if map can be transformed into JSONObject
      */
+    @SuppressWarnings("WeakerAccess")
     public static String toJsonAPI(String type, String id, HashMap<String, Object> map) throws JSONException {
         JSONObject resource = buildResourceObject(type, id, map);
         JSONObject jsonApiObject = new JSONObject();
         jsonApiObject.put(KEY_DATA_ELEMENT, resource);
         return jsonApiObject.toString();
     }
+
 
     public static String toJsonAPINoAttributes(String type, List<? extends Resource> resources) throws JSONException, IllegalArgumentException {
         if (resources == null) {
@@ -176,6 +183,7 @@ public class JsonAPIUtils {
         return parseListAndMeta(jsonAPIParser, json, clazz).list;
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static <T> ListMetaBundle<T> parseListAndMeta(JsonAPIParser jsonAPIParser, JSONObject json, Class<T> clazz) {
         JsonApiObject jsonApiObject = null;
         try {
