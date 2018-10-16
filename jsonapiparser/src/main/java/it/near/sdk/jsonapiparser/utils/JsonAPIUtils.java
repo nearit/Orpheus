@@ -40,7 +40,10 @@ public class JsonAPIUtils {
      * @throws IllegalArgumentException if type is null
      */
     @SuppressWarnings("WeakerAccess")
-    public static String toJsonAPI(String type, HashMap<String, Object> map) throws JSONException {
+    public static String toJsonAPI(String type, HashMap<String, Object> map) throws JSONException, IllegalArgumentException {
+        if (type == null) {
+            throw new IllegalArgumentException("If id is null, type CAN'T be null");
+        }
         return toJsonAPI(type, null, map);
     }
 
