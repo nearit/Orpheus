@@ -1,0 +1,41 @@
+{
+  "data": {
+    "id": "1",
+    "type": "test_with_rel",
+    "attributes": {
+      "content": "father"
+    },
+    "relationships": {
+      "child": {
+        "data": {
+          "id": "2",
+          "type": "test_with_rel"
+        }
+      }
+    }
+  },
+  "included": [
+    {
+      "id": "2",
+      "type": "test_with_rel",
+      "attributes": {
+        "content": "son"
+      },
+      "relationships": {
+        "child": {
+          "data": {
+            "id" : "3",
+            "type": "test_with_rel"
+          }
+        }
+      }
+    },
+    {
+      "id": "3",
+      "type": "test_with_rel",
+      "attributes": {
+        "content": "grandson"
+      }
+    }
+  ]
+}
