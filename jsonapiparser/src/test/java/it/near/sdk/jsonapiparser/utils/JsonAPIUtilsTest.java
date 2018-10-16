@@ -7,6 +7,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +20,7 @@ import static org.hamcrest.Matchers.notNullValue;
 /**
  * Created by cattaneostefano on 27/02/2017.
  */
-
+@RunWith(JUnit4.class)
 public class JsonAPIUtilsTest {
 
     @Test
@@ -77,6 +79,19 @@ public class JsonAPIUtilsTest {
 
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void toJsonApiWithId_ifResourcesAreNull_throw() throws JSONException {
+        JsonAPIUtils.toJsonAPI("type", "id", null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void toJsonApiWithId_ifTypeIsNull_throw() throws JSONException {
+        HashMap<String, Object> attributes = Maps.newHashMap();
+        attributes.put("name", "mario rossi");
+        attributes.put("color", "black");
+        JsonAPIUtils.toJsonAPI(null, "id", attributes);
+    }
+
     @Test
     public void toJsonApiWithId() throws JSONException {
         HashMap<String, Object> attributes = Maps.newHashMap();
@@ -98,6 +113,11 @@ public class JsonAPIUtilsTest {
         assertThat(actualJson, is(notNullValue()));
         assertThat(actualJson.getString("name"), is("bonetti"));
         assertThat(actualJson.getString("color"), is("black"));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void toJsonApiFromIdTypePairs_ifPairIsNull_throw() throws JSONException {
+        JsonAPIUtils.toJsonAPIWithIds("type", null);
     }
 
 }
