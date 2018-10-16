@@ -36,7 +36,8 @@ public class JsonAPIUtils {
      * @param type the type of the jsonapi resource.
      * @param map  the attribute map.
      * @return codified string.
-     * @throws JSONException if map can be transformed into JSONObject
+     * @throws JSONException if map can't be transformed into JSONObject
+     * @throws IllegalArgumentException if type is null
      */
     @SuppressWarnings("WeakerAccess")
     public static String toJsonAPI(String type, HashMap<String, Object> map) throws JSONException {
@@ -49,7 +50,7 @@ public class JsonAPIUtils {
      * @param type the type of the jsonapi resource.
      * @param maps the maps of attributes.
      * @return codified string.
-     * @throws JSONException if map can be transformed into JSONObject
+     * @throws JSONException if map can't be transformed into JSONObject
      */
     @SuppressWarnings("WeakerAccess")
     public static String toJsonAPI(String type, List<HashMap<String, Object>> maps) throws JSONException {
@@ -93,7 +94,7 @@ public class JsonAPIUtils {
      * @param id   id of the resource.
      * @param map  values map.
      * @return codified string.
-     * @throws JSONException if map can be transformed into JSONObject
+     * @throws JSONException if map can't be transformed into JSONObject
      */
     @SuppressWarnings("WeakerAccess")
     public static String toJsonAPI(String type, String id, HashMap<String, Object> map) throws JSONException {
@@ -142,7 +143,7 @@ public class JsonAPIUtils {
      * @param id   id of the resource.
      * @param map  values map
      * @return JSONObject representation of map object.
-     * @throws JSONException if map can be transformed into JSONObject
+     * @throws JSONException if map can't be transformed into JSONObject
      */
     private static JSONObject buildResourceObject(String type, String id, HashMap<String, Object> map) throws JSONException {
         if (type == null) {
@@ -183,7 +184,7 @@ public class JsonAPIUtils {
         return parseListAndMeta(jsonAPIParser, json, clazz).list;
     }
 
-    @SuppressWarnings("WeakerAccess")
+    @SuppressWarnings({"WeakerAccess", "Convert2Diamond"})
     public static <T> ListMetaBundle<T> parseListAndMeta(JsonAPIParser jsonAPIParser, JSONObject json, Class<T> clazz) {
         JsonApiObject jsonApiObject = null;
         try {
