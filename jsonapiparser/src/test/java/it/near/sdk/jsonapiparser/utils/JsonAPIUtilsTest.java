@@ -51,7 +51,9 @@ public class JsonAPIUtilsTest {
         HashMap<String, Object> secondMap = Maps.newHashMap();
         secondMap.put("name", "neuer");
         secondMap.put("color", "white");
-        List<HashMap<String, Object>> mapList = Lists.newArrayList(firstMap, secondMap);
+        List<HashMap<String, Object>> mapList = Lists.newArrayList();
+        mapList.add(firstMap);
+        mapList.add(secondMap);
         String type = "goalkeeper";
         String jsonApiOutput = JsonAPIUtils.toJsonAPI(type, mapList);
         assertThat(jsonApiOutput, is(notNullValue()));
