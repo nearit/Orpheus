@@ -1,0 +1,84 @@
+# Java Gradle CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-java/ for more details
+#
+version: 2
+
+references:
+  container_config: &container_config
+    docker:
+      # specify the version you desire here
+      - image: circleci/android:api-28-alpha
+    working_directory: ~/repo
+    environment:
+      # Customize the JVM maximum heap limit
+      JVM_OPTS: -Xmx3200m
+      TERM: dumb
+
+jobs:
+
+  build:
+    <<: *container_config
+    branches:
+      only:
+        - master
+        - develop
+        - /release\/.*/
+        - /hotfix\/.*/
+    steps:
+      - checkout
+
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum "jsonapiparser/build.gradle" }}
+
+      - run:
+          name: Download Dependencies
+          command: ./gradlew jsonapiparser:androidDependencies
+
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum "jsonapiparser/build.gradle" }}
+
+      - run:
+          name: Run tests
+          command: ./gradlew jsonapiparser:check
+
+      - run:
+          name: Change circle-android script file permissions
+          command: sudo chmod +rx /bin/circle-android
+
+      - run:
+          name: Setup emulator
+          command: sdkmanager "system-images;android-22;default;armeabi-v7a" && echo "no" | avdmanager create avd -n test -k "system-images;android-22;default;armeabi-v7a"
+
+      - run:
+          name: Launch emulator
+          command: export LD_LIBRARY_PATH=${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib && emulator64-arm -avd test -noaudio -no-boot-anim -no-window -accel on
+          background: true
+
+      - run:
+          name: Wait for emulator
+          command: |
+              circle-android wait-for-boot
+              sleep 30
+              adb shell input keyevent 82
+
+      - run:
+           name: Instrumentation testing
+           command: ./gradlew jsonapiparser:connectedCheck
+           environment:
+             TERM: dumb
+
+      #- run:
+      #    name: Bintray dependency startup check
+      #    command: ./gradlew startuptest:connectedAndroidTest
+      #    environment:
+      #      TERM: dumb
+
+      - store_artifacts:
+          path: app/build/reports
+          destination: reports
+
+      - store_test_results:
+          path: app/build/test-results

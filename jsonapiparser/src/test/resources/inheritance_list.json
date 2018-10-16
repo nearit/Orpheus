@@ -1,0 +1,44 @@
+{
+  "data": [
+    {
+      "type": "mother",
+      "id": 1,
+      "attributes": {
+        "address": "address1",
+        "mom": "mom1"
+      }
+    },
+    {
+      "type": "mother",
+      "id": 2,
+      "attributes": {
+        "address": "address2",
+        "mom": "mom2"
+      }
+    },
+    {
+      "type": "father",
+      "id": 3,
+      "attributes": {
+        "address": "address3",
+        "dad": "dad3"
+      }
+    },
+    {
+      "type": "mother",
+      "id": 4,
+      "attributes": {
+        "address": "address4",
+        "mom": "mom4"
+      }
+    },
+    {
+      "type": "father",
+      "id": 5,
+      "attributes": {
+        "address": "address5",
+        "dad": "dad5"
+      }
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+ext {
+
+    libraries = [
+            near: [
+                    gson        : "com.google.code.gson:gson:2.8.5"
+            ],
+            test: [
+                    junit       : "junit:junit:4.12",
+                    mockito_core: "org.mockito:mockito-core:2.22.0",
+                    // using the latest java7-compatible guava version
+                    guava       : "com.google.guava:guava:20.0",
+                    hamcrest    : "org.hamcrest:hamcrest-library:1.3",
+                    json        : "org.json:json:20160212",
+                    joda_time   : "joda-time:joda-time:2.9.3",
+                    test_runner : "com.android.support.test:runner:1.0.1"
+            ]
+    ]
+}

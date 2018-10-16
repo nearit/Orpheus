@@ -1,0 +1,30 @@
+package it.near.sdk.jsonapiparser.annotations;
+
+import android.support.annotation.Keep;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Keep
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+/**
+ * Define your json:api relationship.
+ *
+ * <pre>
+ * {@code
+ * @Relationship("author")
+ * private Author author;
+ *
+ * @Relationship("comments")
+ * private List<Comment> comments;
+ * }
+ * </pre>
+ */
+public @interface Relationship {
+    String value();
+}
