@@ -181,7 +181,7 @@ public class JsonAPIUtils {
         try {
             jsonApiObject = jsonAPIParser.parse(json);
         } catch (Exception e) {
-            Logger.debug("Parsing error");
+            Logger.debug(TAG,"Parsing error");
         }
 
         ListMetaBundle<T> listMetaBundle = new ListMetaBundle<>();
@@ -219,7 +219,7 @@ public class JsonAPIUtils {
         try {
             jsonApiObject = jsonAPIParser.parse(json);
         } catch (Exception e) {
-            Logger.debug("Parsing error");
+            Logger.debug(TAG,"Parsing error");
         }
         return (T) jsonApiObject.getResource();
     }
