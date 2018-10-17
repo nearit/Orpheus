@@ -3,15 +3,21 @@ package it.near.sdk.performancetestapplication.models;
 import android.support.annotation.Keep;
 import android.support.annotation.Nullable;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
+import it.near.sdk.jsonapiparser.Resource;
+import it.near.sdk.jsonapiparser.annotations.Relationship;
 
 
 /**
  * Created by cattaneostefano on 21/09/16.
  */
 @Keep
-public class Node /*extends Resource*/ {
+public class Node extends Resource {
 
-    /*@Nullable
+    @Nullable
     @SerializedName("identifier")
     public String identifier;
 
@@ -48,9 +54,9 @@ public class Node /*extends Resource*/ {
         return identifier != null ? identifier.hashCode() : 0;
     }
 
-    *//**
+    /**
      * parent chain depth of the node, it counts the node itself.
-     *//*
+     */
     public int parentDepth() {
         Node traveller = this;
         int depth = 0;
@@ -64,5 +70,5 @@ public class Node /*extends Resource*/ {
     public boolean isBeacon() {
         return this instanceof BeaconNode &&
                 this.isBeacon();
-    }*/
+    }
 }

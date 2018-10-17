@@ -13,6 +13,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
 
+import it.near.sdk.jsonapiparser.JsonAPIParser;
+import it.near.sdk.jsonapiparser.utils.JsonAPIUtils;
 import it.near.sdk.performancetestapplication.models.BeaconNode;
 import it.near.sdk.performancetestapplication.models.GeofenceNode;
 import it.near.sdk.performancetestapplication.models.Node;
@@ -22,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String FILE_TAG = "FROM_FILE";
     private static final String SP_TAG = "FROM_SHAREDPREFS";
 
-    //private JsonAPIParser parser;
+    private JsonAPIParser parser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,16 +36,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onPostResume() {
         super.onPostResume();
 
-        /*parser = new JsonAPIParser();
+        parser = new JsonAPIParser();
         parser.getFactory().getDeserializer().registerResourceClass("nodes", Node.class);
         parser.getFactory().getDeserializer().registerResourceClass("beacon_nodes", BeaconNode.class);
         parser.getFactory().getDeserializer().registerResourceClass("geofence_nodes", GeofenceNode.class);
 
         loadNodes(parser);
-        Log.e(FILE_TAG, "jsonApi parsed");*/
+        Log.e(FILE_TAG, "jsonApi parsed");
     }
 
-    /*private List<Node> loadNodes(JsonAPIParser parser) {
+    private List<Node> loadNodes(JsonAPIParser parser) {
         Log.e(FILE_TAG, "starting loading from assets");
         String config = null;
         try {
@@ -102,5 +104,5 @@ public class MainActivity extends AppCompatActivity {
     private void saveToSharedPrefs(JSONObject jsonObject) {
         SharedPreferences sp = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         sp.edit().putString("tree", jsonObject.toString()).apply();
-    }*/
+    }
 }

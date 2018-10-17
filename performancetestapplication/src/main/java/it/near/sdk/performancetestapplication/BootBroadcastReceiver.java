@@ -10,6 +10,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
+import it.near.sdk.jsonapiparser.JsonAPIParser;
+import it.near.sdk.jsonapiparser.utils.JsonAPIUtils;
 import it.near.sdk.performancetestapplication.models.BeaconNode;
 import it.near.sdk.performancetestapplication.models.GeofenceNode;
 import it.near.sdk.performancetestapplication.models.Node;
@@ -26,11 +28,11 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
-            //loadFromCache(context);
+            loadFromCache(context);
         }
     }
 
-    /*private void loadFromCache(Context context) {
+    private void loadFromCache(Context context) {
         JsonAPIParser parser = new JsonAPIParser();
         parser.getFactory().getDeserializer().registerResourceClass("nodes", Node.class);
         parser.getFactory().getDeserializer().registerResourceClass("beacon_nodes", BeaconNode.class);
@@ -56,5 +58,5 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
                 e.printStackTrace();
             }
         }
-    }*/
+    }
 }

@@ -5,6 +5,9 @@ import android.os.Parcelable;
 import android.support.annotation.Keep;
 
 
+import com.google.android.gms.location.Geofence;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +16,8 @@ import java.util.List;
  * Created by cattaneostefano on 21/09/16.
  */
 @Keep
-public class GeofenceNode /*extends Node implements Parcelable*/ {
-    /*private static final int LOITERING_DELAY = 30000;
+public class GeofenceNode extends Node implements Parcelable {
+    private static final int LOITERING_DELAY = 30000;
     @SerializedName("latitude")
     public Number latitude;
 
@@ -77,7 +80,7 @@ public class GeofenceNode /*extends Node implements Parcelable*/ {
             geofences.add(geofenceNode.toGeofence());
         }
         return geofences;
-    }*/
+    }
 
 
 }

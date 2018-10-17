@@ -1,14 +1,15 @@
 package it.near.sdk.performancetestapplication.models;
 
-import android.support.annotation.Keep;
 
+import com.google.gson.annotations.SerializedName;
 
+import org.altbeacon.beacon.Identifier;
+import org.altbeacon.beacon.Region;
 
 import java.util.UUID;
 
-@Keep
 public class BeaconNode extends Node {
-    /*@SerializedName("proximity_uuid")
+    @SerializedName("proximity_uuid")
     public String proximityUUID;
 
     @SerializedName("major")
@@ -31,5 +32,5 @@ public class BeaconNode extends Node {
 
     public boolean isBeacon() {
         return this.minor != null && this.major != null;
-    }*/
+    }
 }
