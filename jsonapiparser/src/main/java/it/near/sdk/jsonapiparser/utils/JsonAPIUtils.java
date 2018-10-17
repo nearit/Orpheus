@@ -42,9 +42,26 @@ public class JsonAPIUtils {
     @SuppressWarnings("WeakerAccess")
     public static String toJsonAPI(String type, HashMap<String, Object> map) throws JSONException, IllegalArgumentException {
         if (type == null) {
-            throw new IllegalArgumentException("If id is null, type CAN'T be null");
+            throw new IllegalArgumentException("Type CAN'T be null");
         }
         return toJsonAPI(type, null, map);
+    }
+
+    /**
+     * Turns an hashmap of values to a jsonapi resource string. Also sets the id.
+     *
+     * @param type jsonapi resource type.
+     * @param id   id of the resource.
+     * @param map  values map.
+     * @return codified string.
+     * @throws JSONException if map can't be transformed into JSONObject
+     */
+    @SuppressWarnings("WeakerAccess")
+    public static String toJsonAPI(String type, String id, HashMap<String, Object> map) throws JSONException {
+        JSONObject resource = buildResourceObject(type, id, map);
+        JSONObject jsonApiObject = new JSONObject();
+        jsonApiObject.put(KEY_DATA_ELEMENT, resource);
+        return jsonApiObject.toString();
     }
 
     /**
@@ -90,24 +107,6 @@ public class JsonAPIUtils {
         return jsonApiObject.toString();
     }
 
-    /**
-     * Turns an hashmap of values to a jsonapi resource string. Also sets the id.
-     *
-     * @param type jsonapi resource type.
-     * @param id   id of the resource.
-     * @param map  values map.
-     * @return codified string.
-     * @throws JSONException if map can't be transformed into JSONObject
-     */
-    @SuppressWarnings("WeakerAccess")
-    public static String toJsonAPI(String type, String id, HashMap<String, Object> map) throws JSONException {
-        JSONObject resource = buildResourceObject(type, id, map);
-        JSONObject jsonApiObject = new JSONObject();
-        jsonApiObject.put(KEY_DATA_ELEMENT, resource);
-        return jsonApiObject.toString();
-    }
-
-
     public static String toJsonAPINoAttributes(String type, List<? extends Resource> resources) throws JSONException, IllegalArgumentException {
         if (resources == null) {
             throw new IllegalArgumentException("Missing resources");
@@ -121,6 +120,14 @@ public class JsonAPIUtils {
         return jsonApiObject.toString();
     }
 
+    /**
+     * Build the a resource object
+     * @param type      jsonapi resource type.
+     * @param resource  id of the resource.
+     * @return JSONObject representation of the resource.
+     * @throws JSONException if resource can't be transformed into JSONObject
+     * @throws IllegalArgumentException if type, resource or its id are null
+     */
     private static JSONObject buildResourceObject(String type, Resource resource) throws JSONException, IllegalArgumentException {
         if (resource == null) {
             throw new IllegalArgumentException("Missing Resource");
