@@ -17,9 +17,21 @@ public class Logger {
         }
     }
 
+    public static void debug(String tag, String message) {
+        if (debug) {
+            Log.d(tag, message);
+        }
+    }
+
     public static void error(String message) {
         if (error) {
             Log.e(TAG, message);
+        }
+    }
+
+    public static void error(String tag, String message) {
+        if (error) {
+            Log.e(tag, message);
         }
     }
 

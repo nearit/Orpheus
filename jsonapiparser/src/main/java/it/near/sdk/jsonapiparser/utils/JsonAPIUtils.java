@@ -23,6 +23,7 @@ import static it.near.sdk.jsonapiparser.utils.lang.Lang.safe;
  */
 
 public class JsonAPIUtils {
+
     private static final String TAG = "NearJsonAPIUtils";
     private static final String KEY_DATA_ELEMENT = "data";
     private static final String KEY_ID = "id";
@@ -35,10 +36,32 @@ public class JsonAPIUtils {
      * @param type the type of the jsonapi resource.
      * @param map  the attribute map.
      * @return codified string.
-     * @throws JSONException if map can be transformed into JSONObject
+     * @throws JSONException if map can't be transformed into JSONObject
+     * @throws IllegalArgumentException if type is null
      */
-    public static String toJsonAPI(String type, HashMap<String, Object> map) throws JSONException {
+    @SuppressWarnings("WeakerAccess")
+    public static String toJsonAPI(String type, HashMap<String, Object> map) throws JSONException, IllegalArgumentException {
+        if (type == null) {
+            throw new IllegalArgumentException("Type CAN'T be null");
+        }
         return toJsonAPI(type, null, map);
+    }
+
+    /**
+     * Turns an hashmap of values to a jsonapi resource string. Also sets the id.
+     *
+     * @param type jsonapi resource type.
+     * @param id   id of the resource.
+     * @param map  values map.
+     * @return codified string.
+     * @throws JSONException if map can't be transformed into JSONObject
+     */
+    @SuppressWarnings("WeakerAccess")
+    public static String toJsonAPI(String type, String id, HashMap<String, Object> map) throws JSONException {
+        JSONObject resource = buildResourceObject(type, id, map);
+        JSONObject jsonApiObject = new JSONObject();
+        jsonApiObject.put(KEY_DATA_ELEMENT, resource);
+        return jsonApiObject.toString();
     }
 
     /**
@@ -47,8 +70,9 @@ public class JsonAPIUtils {
      * @param type the type of the jsonapi resource.
      * @param maps the maps of attributes.
      * @return codified string.
-     * @throws JSONException if map can be transformed into JSONObject
+     * @throws JSONException if map can't be transformed into JSONObject
      */
+    @SuppressWarnings("WeakerAccess")
     public static String toJsonAPI(String type, List<HashMap<String, Object>> maps) throws JSONException {
         JSONArray resources = new JSONArray();
         for (HashMap<String, Object> map : safe(maps)) {
@@ -66,7 +90,9 @@ public class JsonAPIUtils {
      * @param pairs the pairs of id and type.
      * @return codified string
      * @throws JSONException if object can't be constructed
+     * @throws IllegalArgumentException if pairs is null
      */
+    @SuppressWarnings("WeakerAccess")
     public static String toJsonAPIWithIds(String type,
                                           List<Pair<String, HashMap<String, Object>>> pairs) throws JSONException, IllegalArgumentException {
         if (pairs == null) {
@@ -78,22 +104,6 @@ public class JsonAPIUtils {
         }
         JSONObject jsonApiObject = new JSONObject();
         jsonApiObject.put(KEY_DATA_ELEMENT, resources);
-        return jsonApiObject.toString();
-    }
-
-    /**
-     * Turns an hashmap of values to a jsonapi resource string. Also sets the id.
-     *
-     * @param type jsonapi resource type.
-     * @param id   id of the resource.
-     * @param map  values map.
-     * @return codified string.
-     * @throws JSONException if map can be transformed into JSONObject
-     */
-    public static String toJsonAPI(String type, String id, HashMap<String, Object> map) throws JSONException {
-        JSONObject resource = buildResourceObject(type, id, map);
-        JSONObject jsonApiObject = new JSONObject();
-        jsonApiObject.put(KEY_DATA_ELEMENT, resource);
         return jsonApiObject.toString();
     }
 
@@ -110,6 +120,14 @@ public class JsonAPIUtils {
         return jsonApiObject.toString();
     }
 
+    /**
+     * Build the a resource object
+     * @param type      jsonapi resource type.
+     * @param resource  id of the resource.
+     * @return JSONObject representation of the resource.
+     * @throws JSONException if resource can't be transformed into JSONObject
+     * @throws IllegalArgumentException if type, resource or its id are null
+     */
     private static JSONObject buildResourceObject(String type, Resource resource) throws JSONException, IllegalArgumentException {
         if (resource == null) {
             throw new IllegalArgumentException("Missing Resource");
@@ -135,7 +153,7 @@ public class JsonAPIUtils {
      * @param id   id of the resource.
      * @param map  values map
      * @return JSONObject representation of map object.
-     * @throws JSONException if map can be transformed into JSONObject
+     * @throws JSONException if map can't be transformed into JSONObject
      */
     private static JSONObject buildResourceObject(String type, String id, HashMap<String, Object> map) throws JSONException {
         if (type == null) {
@@ -176,12 +194,13 @@ public class JsonAPIUtils {
         return parseListAndMeta(jsonAPIParser, json, clazz).list;
     }
 
+    @SuppressWarnings({"WeakerAccess", "Convert2Diamond"})
     public static <T> ListMetaBundle<T> parseListAndMeta(JsonAPIParser jsonAPIParser, JSONObject json, Class<T> clazz) {
         JsonApiObject jsonApiObject = null;
         try {
             jsonApiObject = jsonAPIParser.parse(json);
         } catch (Exception e) {
-            Logger.debug("Parsing error");
+            Logger.debug(TAG,"Parsing error");
         }
 
         ListMetaBundle<T> listMetaBundle = new ListMetaBundle<>();
@@ -219,7 +238,7 @@ public class JsonAPIUtils {
         try {
             jsonApiObject = jsonAPIParser.parse(json);
         } catch (Exception e) {
-            Logger.debug("Parsing error");
+            Logger.debug(TAG,"Parsing error");
         }
         return (T) jsonApiObject.getResource();
     }
