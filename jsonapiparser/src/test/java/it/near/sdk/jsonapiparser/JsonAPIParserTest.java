@@ -116,7 +116,7 @@ public class JsonAPIParserTest {
         List<TestChildModel> children = objWithChildren.children;
         assertThat(children, hasSize(2));
         assertThat(children.get(0).getId(), is("e7cde6f7-c2fe-4e4d-9bdc-40dd9b4b4597"));
-        assertThat(children.get(0).getIsFavoChild(), is(false));
+        assertThat(children.get(0).getIsFavoChild(), is(true));
         assertThat(children.get(1).getId(), is("d232d2c1-1c47-4888-bb38-5c7e0893dea5"));
         assertThat(children.get(1).getIsFavoChild(), is(false));
     }
