@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -105,9 +106,11 @@ public class JsonAPIParser {
             if (jsonApiObject.getIncluded() != null) {
                 resourcesToLink.addAll(jsonApiObject.getIncluded());
             }
+            HashMap<String, Resource> map = new HashMap<>();
             for (Resource resource : resourcesToLink) {
-                mapper.mapRelations(resource, resourcesToLink);
+                map.put(resource.getId(), resource);
             }
+            mapper.mapRelations(map);
         } catch (Exception e) {
             Logger.debug("unable to resolve relationships");
         } catch (IncompatibleClassChangeError samsung) {
