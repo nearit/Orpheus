@@ -24,11 +24,10 @@ public class Factory {
      * Deserializes a json object of data to the registered class.
      *
      * @param dataObject JSONObject from data
-     * @param included   {@literal List<Resource>} from includes to automatic match them.
      * @return Deserialized Object.
      * @throws Exception when deserializer is not able to create instance.
      */
-    public Resource newObjectFromJSONObject(JSONObject dataObject, List<Resource> included) throws Exception {
+    public Resource newObjectFromJSONObject(JSONObject dataObject) throws Exception {
         Resource realObject = null;
 
         try {
@@ -54,12 +53,6 @@ public class Factory {
             Logger.error("SAMSUNG: Error mapping attributes");
         }
 
-    /*try {
-      realObject = mapper.mapRelations(realObject, dataObject.getJSONObject("relationships"), included);
-    } catch (Exception e) {
-      Logger.debug("JSON data does not contain relationships");
-    }*/
-
         try {
             assert realObject != null;
             realObject.setMeta(mapper.getAttributeMapper().createMapFromJSONObject(dataObject.getJSONObject("meta")));
@@ -80,11 +73,10 @@ public class Factory {
      * Loops through data objects and deserializes them.
      *
      * @param dataArray JSONArray of the data node.
-     * @param included  {@literal List<Resource>} from includes to automatic match them.
      * @return List of deserialized objects.
      * @throws Exception when deserializer is not able to create instance.
      */
-    public List<Resource> newObjectFromJSONArray(JSONArray dataArray, List<Resource> included) throws Exception {
+    public List<Resource> newObjectFromJSONArray(JSONArray dataArray) throws Exception {
         ArrayList<Resource> objects = new ArrayList<>();
 
         for (int i = 0; i < dataArray.length(); i++) {
@@ -96,7 +88,7 @@ public class Factory {
                 Logger.debug("Was not able to get dataArray[" + i + "] as JSONObject.");
             }
             try {
-                objects.add(newObjectFromJSONObject(jsonObject, included));
+                objects.add(newObjectFromJSONObject(jsonObject));
             } catch (Exception e) {
                 throw e;
             }
