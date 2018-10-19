@@ -144,94 +144,53 @@ public class Mapper {
         return object;
     }
 
-    /**
-     * Loops through relation JSON array and maps annotated objects.
-     *
-     * @param object     Real object to map.
-     * @param jsonObject JSONObject.
-     * @param included   List of included resources.
-     * @return Real object with relations.
-     * @throws Exception when deserializer is not able to create instance.
-     */
-    public Resource mapRelations(Resource object, JSONObject jsonObject,
-                                 List<Resource> included) throws Exception, IncompatibleClassChangeError {
-        HashMap<String, String> relationshipNames = getRelationshipNames(object.getClass());
+    public void mapRelations(HashMap<String, Resource> resources) {
+        String DATA = "data";
+        String ID = "id";
+        for (Resource resource : resources.values()) {
+            HashMap<String, String> relationshipNames = getRelationshipNames(resource.getClass());
 
-        //going through relationship names annotated in Class
-        for (String relationship : relationshipNames.keySet()) {
-            JSONObject relationJsonObject = null;
+            JSONObject resourceRelationships = null;
             try {
-                relationJsonObject = jsonObject.getJSONObject(relationship);
+                resourceRelationships = resource.getJsonSourceObject().getJSONObject("relationships");
             } catch (JSONException e) {
-                Logger.debug("Relationship named " + relationship + "not found in JSON");
-                continue;
+                Logger.debug("Resource does not have relationships");
             }
 
-            //map json object of data
-            JSONObject relationDataObject = null;
-            try {
-                relationDataObject = relationJsonObject.getJSONObject("data");
-                Resource relationObject = factory.newObjectFromJSONObject(relationDataObject, null);
+            if (resourceRelationships != null && !relationshipNames.isEmpty()) {
+                for (String relationshipKey : relationshipNames.keySet()) {
+                    JSONObject relation = null;
+                    try {
+                        relation = resourceRelationships.getJSONObject(relationshipKey);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    if (relation != null) {
+                        try {
+                            // DATA is object?
+                            String relationId = relation.getJSONObject(DATA).getString(ID);
+                            mDeserializer.setField(resource, relationshipNames.get(relationshipKey), resources.get(relationId));
+                        } catch (JSONException e) {
 
-                relationObject = matchIncludedToRelation(relationObject, included);
+                        }
+                        try {
+                            JSONArray relations = relation.getJSONArray(DATA);
+                            List<Resource> rela = new ArrayList<>();
+                            for (int i = 0; i< relations.length(); i++) {
+                                String relationId = relations.getJSONObject(i).getString(ID);
+                                rela.add(resources.get(relationId));
+                            }
 
-                mDeserializer.setField(object, relationshipNames.get(relationship), relationObject);
-            } catch (JSONException e) {
-                Logger.debug("JSON relationship does not contain data");
-            }
+                            mDeserializer.setField(resource, relationshipNames.get(relationshipKey), rela);
+                        } catch (JSONException e) {
 
-            //map json array of data
-            JSONArray relationDataArray = null;
-            try {
-                relationDataArray = relationJsonObject.getJSONArray("data");
-                List<Resource> relationArray = factory.newObjectFromJSONArray(relationDataArray, null);
-
-                relationArray = matchIncludedToRelation(relationArray, included);
-
-                mDeserializer.setField(object, relationshipNames.get(relationship), relationArray);
-            } catch (Exception e) {
-                Logger.debug("JSON relationship does not contain data");
+                        }
+                    }
+                }
             }
         }
-
-        return object;
     }
 
-
-    /**
-     * Will check if the relation is included. If true included object will be returned.
-     *
-     * @param object   Relation resources.
-     * @param included List of included resources.
-     * @return Relation of included resource.
-     */
-    public Resource matchIncludedToRelation(Resource object, List<Resource> included) {
-        if (included == null) {
-            return object;
-        }
-
-        for (Resource resource : included) {
-            if (object.getId().equals(resource.getId()) && object.getClass().equals(resource.getClass())) {
-                return resource;
-            }
-        }
-        return object;
-    }
-
-    /**
-     * Loops through relations and calls {@link #matchIncludedToRelation(Resource, List)}.
-     *
-     * @param relationResources List of relation resources.
-     * @param included          List of included resources.
-     * @return List of relations and/or included resources.
-     */
-    public List<Resource> matchIncludedToRelation(List<Resource> relationResources, List<Resource> included) {
-        List<Resource> matchedResources = new ArrayList<>();
-        for (Resource resource : relationResources) {
-            matchedResources.add(matchIncludedToRelation(resource, included));
-        }
-        return matchedResources;
-    }
 
     public List<Error> mapErrors(JSONArray errorArray) {
         List<Error> errors = new ArrayList<>();
@@ -373,7 +332,4 @@ public class Mapper {
         this.factory = factory;
     }
 
-    public void mapRelations(Resource resource, List<Resource> included) throws Exception, IncompatibleClassChangeError {
-        mapRelations(resource, resource.getJsonSourceObject().getJSONObject("relationships"), included);
-    }
 }
