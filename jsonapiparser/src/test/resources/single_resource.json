@@ -5,7 +5,14 @@
     "attributes": {
       "content" : "contenuto",
       "double_value" : 45.09843,
-      "int_value" : 5000
+      "int_value" : 5000,
+      "object" : {
+        "string" : "stringa",
+        "double_value" : 45.09843,
+        "int_value" : 5000,
+        "camelCase" : "camelCase",
+        "with_underscores" : "with_underscores"
       }
     }
   }
+}

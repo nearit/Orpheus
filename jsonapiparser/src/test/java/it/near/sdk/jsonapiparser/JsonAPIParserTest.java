@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.List;
 
 import it.near.sdk.jsonapiparser.models.SingleRelationship;
@@ -62,6 +63,13 @@ public class JsonAPIParserTest {
         assertThat(object.content, is("contenuto"));
         assertThat(object.double_value.doubleValue(), is(45.09843));
         assertThat(object.int_value.intValue(), is(5000));
+        HashMap<String, Object> map = object.map;
+        assertNotNull(map);
+        assertThat((String) map.get("string"), is("stringa"));
+        assertThat((Double) map.get("double_value"), is(45.09843));
+        assertThat(((Double) map.get("int_value")).intValue(), is(5000));
+        assertThat((String) map.get("camelCase"), is("camelCase"));
+        assertThat((String) map.get("with_underscores"), is("with_underscores"));
     }
 
     @Test

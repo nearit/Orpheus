@@ -2,6 +2,7 @@ package it.near.sdk.jsonapiparser.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.HashMap;
 import java.util.List;
 
 import it.near.sdk.jsonapiparser.Resource;
@@ -16,6 +17,8 @@ public class TestModel extends Resource {
     public Number int_value;
     @SerializedName("list_string")
     public List<String> strings;
+    @SerializedName("object")
+    public HashMap<String, Object> map;
 
     public TestModel() {
     }
