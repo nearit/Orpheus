@@ -1,7 +1,5 @@
 package it.near.sdk.jsonapiparser;
 
-import com.google.common.collect.Maps;
-
 import org.hamcrest.core.IsInstanceOf;
 import org.json.JSONObject;
 import org.junit.Before;
@@ -41,7 +39,6 @@ public class JsonAPIParserTest {
 
     @Before
     public void setUP() {
-        Deserializer.setRegisteredClasses(Maps.<String, Class>newHashMap());
         jsonAPIParser = new JsonAPIParser();
         jsonAPIParser.getFactory().getDeserializer().registerResourceClass("test", TestModel.class);
         jsonAPIParser.getFactory().getDeserializer().registerResourceClass("test_child", TestChildModel.class);
