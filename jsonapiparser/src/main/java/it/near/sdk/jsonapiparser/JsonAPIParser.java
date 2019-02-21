@@ -37,6 +37,10 @@ public class JsonAPIParser {
         factory.setMapper(mapper);
     }
 
+    public void registerResourceClass(String typeName, Class resourceClass) {
+        getFactory().getDeserializer().registerResourceClass(typeName, resourceClass);
+    }
+
     public Factory getFactory() {
         return factory;
     }

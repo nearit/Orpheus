@@ -10,7 +10,7 @@ import it.near.sdk.jsonapiparser.exceptions.NotExtendingResourceException;
  */
 public class Deserializer {
 
-    private static HashMap<String, Class> registeredClasses = new HashMap<>();
+    private HashMap<String, Class> registeredClasses = new HashMap<>();
 
     /**
      * Register your class for a JSON type.
@@ -22,7 +22,7 @@ public class Deserializer {
      * @param resourceClass Class for mapping.
      * @see Resource
      */
-    public static void registerResourceClass(String typeName, Class resourceClass) {
+    public void registerResourceClass(String typeName, Class resourceClass) {
         registeredClasses.put(typeName, resourceClass);
     }
 
@@ -139,11 +139,11 @@ public class Deserializer {
         return superClass;
     }
 
-    public static HashMap<String, Class> getRegisteredClasses() {
+    public HashMap<String, Class> getRegisteredClasses() {
         return registeredClasses;
     }
 
-    public static void setRegisteredClasses(HashMap<String, Class> registeredClasses) {
-        Deserializer.registeredClasses = registeredClasses;
+    public void setRegisteredClasses(HashMap<String, Class> registeredClasses) {
+        this.registeredClasses = registeredClasses;
     }
 }
