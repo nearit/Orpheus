@@ -1,7 +1,5 @@
 package it.near.sdk.jsonapiparser;
 
-import com.google.common.collect.Maps;
-
 import org.hamcrest.core.IsInstanceOf;
 import org.json.JSONObject;
 import org.junit.Before;
@@ -41,15 +39,14 @@ public class JsonAPIParserTest {
 
     @Before
     public void setUP() {
-        Deserializer.setRegisteredClasses(Maps.<String, Class>newHashMap());
         jsonAPIParser = new JsonAPIParser();
-        jsonAPIParser.getFactory().getDeserializer().registerResourceClass("test", TestModel.class);
-        jsonAPIParser.getFactory().getDeserializer().registerResourceClass("test_child", TestChildModel.class);
-        jsonAPIParser.getFactory().getDeserializer().registerResourceClass("test_with_child", TestWithChildModel.class);
-        jsonAPIParser.getFactory().getDeserializer().registerResourceClass("test_with_children", TestWithChildrenModel.class);
-        jsonAPIParser.getFactory().getDeserializer().registerResourceClass("mother", TestMother.class);
-        jsonAPIParser.getFactory().getDeserializer().registerResourceClass("father", TestFather.class);
-        jsonAPIParser.getFactory().getDeserializer().registerResourceClass("test_with_rel", SingleRelationship.class);
+        jsonAPIParser.registerResourceClass("test", TestModel.class);
+        jsonAPIParser.registerResourceClass("test_child", TestChildModel.class);
+        jsonAPIParser.registerResourceClass("test_with_child", TestWithChildModel.class);
+        jsonAPIParser.registerResourceClass("test_with_children", TestWithChildrenModel.class);
+        jsonAPIParser.registerResourceClass("mother", TestMother.class);
+        jsonAPIParser.registerResourceClass("father", TestFather.class);
+        jsonAPIParser.registerResourceClass("test_with_rel", SingleRelationship.class);
     }
 
     @Test
