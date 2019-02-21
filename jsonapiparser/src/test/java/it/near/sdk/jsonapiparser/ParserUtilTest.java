@@ -24,7 +24,6 @@ public class ParserUtilTest {
         map.put("date", Date.class);
         map.put("list", List.class);
 
-        // Deserializer.setRegisteredClasses(Maps.<String, Class>newHashMap());
         JsonAPIParser jsonAPIParser = ParserUtil.buildJsonAPIParserFrom(map);
 
         assertThat(jsonAPIParser.getFactory().getDeserializer().getRegisteredClasses(), is(map));
