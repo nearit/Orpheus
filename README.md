@@ -6,7 +6,7 @@ Our modification involved mapping ternary and circular relationships between ele
 ## Installation
 
 ```java
-implementation 'it.near.sdk:jsonapiparser:1.0-beta'
+implementation 'it.near.sdk:jsonapiparser:1.0.1-beta'
 ```
 
 ## Usage
