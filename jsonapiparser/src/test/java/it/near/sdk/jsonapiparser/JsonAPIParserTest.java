@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import java.util.List;
 
+import it.near.sdk.jsonapiparser.models.AbstractModel;
 import it.near.sdk.jsonapiparser.models.SingleRelationship;
 import it.near.sdk.jsonapiparser.models.TestChildModel;
 import it.near.sdk.jsonapiparser.models.TestModel;
@@ -33,6 +34,7 @@ import static org.hamcrest.core.Is.is;
 /**
  * Created by cattaneostefano on 27/02/2017.
  */
+
 public class JsonAPIParserTest {
 
     private JsonAPIParser jsonAPIParser;
@@ -41,6 +43,7 @@ public class JsonAPIParserTest {
     public void setUP() {
         jsonAPIParser = new JsonAPIParser();
         jsonAPIParser.registerResourceClass("test", TestModel.class);
+        jsonAPIParser.registerResourceClass("abstract", AbstractModel.class);
         jsonAPIParser.registerResourceClass("test_child", TestChildModel.class);
         jsonAPIParser.registerResourceClass("test_with_child", TestWithChildModel.class);
         jsonAPIParser.registerResourceClass("test_with_children", TestWithChildrenModel.class);
@@ -59,6 +62,13 @@ public class JsonAPIParserTest {
         assertThat(object.content, is("contenuto"));
         assertThat(object.double_value.doubleValue(), is(45.09843));
         assertThat(object.int_value.intValue(), is(5000));
+    }
+
+    @Test
+    public void parseElementMalformedWontCrash() throws Exception {
+        JSONObject jsonObject = readJsonFile("abstract_type.json");
+        // using something like an abstract class, causes inner faults
+        JsonAPIUtils.parseElement(jsonAPIParser, jsonObject, AbstractModel.class);
     }
 
     @Test
