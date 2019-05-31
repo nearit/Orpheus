@@ -77,7 +77,7 @@ public class JsonAPIParser {
         try {
             JSONArray includedArray = jsonObject.getJSONArray("included");
             jsonApiObject.setIncluded(factory.newObjectFromJSONArray(includedArray, null));
-        } catch (JSONException e) {
+        } catch (Exception e) {
             Logger.debug("JSON does not contain included");
         }
 
@@ -90,7 +90,7 @@ public class JsonAPIParser {
             jsonApiObject.setResources(factory.newObjectFromJSONArray(dataArray, jsonApiObject.getIncluded()));
             resourcesToLink.addAll(jsonApiObject.getResources());
 
-        } catch (JSONException e) {
+        } catch (Exception e) {
             Logger.debug("JSON does not contain data array");
         }
 
@@ -100,7 +100,7 @@ public class JsonAPIParser {
             dataObject = jsonObject.getJSONObject("data");
             jsonApiObject.setResource(factory.newObjectFromJSONObject(dataObject, jsonApiObject.getIncluded()));
             resourcesToLink.add((Resource) jsonApiObject.getResource());
-        } catch (JSONException e) {
+        } catch (Exception e) {
             Logger.debug("JSON does not contain data object");
         }
 
