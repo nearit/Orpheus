@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.util.List;
 
 import it.near.sdk.jsonapiparser.models.AbstractModel;
+import it.near.sdk.jsonapiparser.models.BadRelationship;
 import it.near.sdk.jsonapiparser.models.SingleRelationship;
 import it.near.sdk.jsonapiparser.models.TestChildModel;
 import it.near.sdk.jsonapiparser.models.TestModel;
@@ -50,6 +51,7 @@ public class JsonAPIParserTest {
         jsonAPIParser.registerResourceClass("mother", TestMother.class);
         jsonAPIParser.registerResourceClass("father", TestFather.class);
         jsonAPIParser.registerResourceClass("test_with_rel", SingleRelationship.class);
+        jsonAPIParser.registerResourceClass("bad_rel", BadRelationship.class);
     }
 
     @Test
@@ -176,6 +178,15 @@ public class JsonAPIParserTest {
         assertThat(element2.content, is("other"));
         SingleRelationship oneAgain = element2.child;
         assertThat(element, is(oneAgain));
+    }
+
+    @Test
+    public void parseBadRelationship() throws Exception {
+        JSONObject jsonObject = readJsonFile("missing_relationship_on_element.json");
+        BadRelationship element = JsonAPIUtils.parseElement(jsonAPIParser, jsonObject, BadRelationship.class);
+        assertNotNull(element);
+        assertNull(element.mother);
+        assertNotNull(element.father);
     }
 
     private void assertMother(TestParent testParent, String expectedAddress, String expectedMom) {

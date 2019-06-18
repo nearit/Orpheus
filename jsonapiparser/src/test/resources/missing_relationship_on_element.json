@@ -1,0 +1,34 @@
+{
+    "data": {
+        "id": "pippo",
+        "type": "bad_rel",
+        "relationships": {
+            "mother": {
+                "data": {
+                    "id": "mommy",
+                    "type": "super_mom"
+                }
+            },
+            "father": {
+                "data": {
+                    "id": "daddy",
+                    "type": "father"
+                }
+            }
+        }
+    },
+    "included": [
+        {
+            "id": "mommy",
+            "type": "super_mom",
+            "attributes" : {}
+        },
+        {
+            "id": "pluto",
+            "type": "ggg",
+            "attributes": {
+
+            }
+        }
+    ]
+}

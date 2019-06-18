@@ -176,7 +176,7 @@ public class Mapper {
                 relationObject = matchIncludedToRelation(relationObject, included);
 
                 mDeserializer.setField(object, relationshipNames.get(relationship), relationObject);
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 Logger.debug("JSON relationship does not contain data");
             }
 
