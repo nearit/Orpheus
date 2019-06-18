@@ -1,0 +1,28 @@
+{
+    "data": [
+        {
+            "id": "pippo",
+            "type": "test_with_rel",
+            "relationships": {
+                "child": {
+                    "data": {
+                        "id": "pippino",
+                        "type": "test_with_rel"
+                    }
+                }
+            }
+        },
+        {
+            "id": "pippo2",
+            "type": "test_with_rel",
+            "relationships": {
+                "child": {
+                    "data": {
+                        "id": "pippino2",
+                        "type": "test_with_rel"
+                    }
+                }
+            }
+        }
+    ]
+}
